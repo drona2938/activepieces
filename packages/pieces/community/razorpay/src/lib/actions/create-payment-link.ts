@@ -3,8 +3,6 @@ import { generateRazorpayAuthHeader, RazorpayCredentials } from '../common/utils
 import { httpClient, HttpMethod } from '@activepieces/pieces-common';
 import { razorpayAuth } from '../..';
 
-
-
 export const createPaymentlink = createAction({
   name: 'create-payment-link',
   auth: razorpayAuth,
@@ -53,8 +51,9 @@ export const createPaymentlink = createAction({
       required: false,
       defaultValue: true,
     }),
-    metafield_notes: Property.ShortText({
-      displayName: 'Notes',
+    metafield_notes: Property.Object({
+      displayName: 'Metafield Notes',
+      description: 'Capture any key-value pair as notes',
       required: false,
     }),
     callback_url: Property.ShortText({
@@ -84,9 +83,7 @@ export const createPaymentlink = createAction({
         sms: context.propsValue.notify_sms,
         email: context.propsValue.notify_email,
       },
-      notes: {
-        policy_name: context.propsValue.metafield_notes,
-      },
+      notes: context.propsValue.metafield_notes, // This will now be an object of key-value pairs
       callback_url: context.propsValue.callback_url,
       callback_method: context.propsValue.callback_method,
     };
